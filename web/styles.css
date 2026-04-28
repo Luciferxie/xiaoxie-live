@@ -1,0 +1,91 @@
+:root {
+  --bg-top: #eef2f7;
+  --bg-bottom: #dbe4ef;
+  --shell-top: #fdfefe;
+  --shell-bottom: #d8e1ed;
+  --shell-edge: rgba(98, 122, 152, 0.22);
+  --screen-top: #182534;
+  --screen-bottom: #0b1119;
+  --text: #31445b;
+  --muted: #7b8ea7;
+  --face: #8fd8ff;
+  --face-soft: rgba(143, 216, 255, 0.16);
+  --pupil: #f4fbff;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; min-height: 100%;
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  color: var(--text);
+  font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+}
+body { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.widget-shell { width: min(320px, calc(100vw - 20px)); aspect-ratio: 1; }
+.widget-card {
+  position: relative; width: 100%; height: 100%; padding: 14px 14px 12px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(247,250,255,0.74));
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 24px 40px rgba(73, 98, 130, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  display: grid; grid-template-rows: 1fr auto; overflow: hidden;
+}
+.screen-shell { position: relative; display: grid; place-items: center; padding-top: 8px; }
+.screen-frame {
+  position: relative; width: 228px; height: 188px; padding: 14px; border-radius: 34px;
+  background: linear-gradient(180deg, var(--shell-top), var(--shell-bottom));
+  border: 1px solid var(--shell-edge);
+  box-shadow: 0 18px 32px rgba(101, 123, 148, 0.18), inset 0 2px 1px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(138,157,180,0.22);
+}
+.screen-face {
+  width: 100%; height: 100%; border-radius: 26px;
+  background: linear-gradient(180deg, var(--screen-top), var(--screen-bottom));
+  border: 1px solid rgba(171, 213, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -10px 24px rgba(0,0,0,0.18);
+  display: grid; place-items: center; overflow: hidden;
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+}
+#face-svg { width: 100%; max-width: 224px; overflow: visible; }
+.eye-shell {
+  fill: color-mix(in srgb, var(--face) 90%, white 10%);
+  filter: drop-shadow(0 0 10px var(--face-soft));
+  transition: all 0.35s ease;
+}
+.pupil {
+  fill: var(--pupil);
+  transition: all 0.35s ease;
+}
+.mouth {
+  fill: none; stroke: var(--face); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round;
+  transition: d 0.35s ease, stroke 0.35s ease;
+}
+.hint-text {
+  fill: var(--face); font-size: 18px; font-weight: 700; opacity: 0.75;
+}
+.status-copy { padding: 10px 6px 4px; text-align: center; }
+.status-copy h1 { margin: 0 0 6px; font-size: 18px; }
+.status-copy p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.status-updated, .tool-hint, .step-hint { margin-top: 6px !important; font-size: 12px !important; }
+.mini-badge {
+  position: absolute; bottom: 98px; right: 18px; font-size: 12px; padding: 5px 10px; border-radius: 999px;
+  background: rgba(255,255,255,0.75); color: var(--text); backdrop-filter: blur(6px);
+}
+.base-shadow {
+  width: 132px; height: 18px; border-radius: 999px; margin-top: 10px;
+  background: radial-gradient(circle, rgba(44, 61, 86, 0.18), rgba(44, 61, 86, 0));
+}
+.screen-face.待机中, .screen-face.等待回复中 { animation: 呼吸 4.8s ease-in-out infinite; }
+.screen-face.调皮中 { animation: 轻晃 3.8s ease-in-out infinite; }
+.screen-face.好奇中, .screen-face.思考中 { animation: 微点头 4.2s ease-in-out infinite; }
+.screen-face.开心中, .screen-face.得意中 { animation: 轻弹 3.4s ease-in-out infinite; }
+.screen-face.心疼中, .screen-face.倾听中 { animation: 安抚 4.2s ease-in-out infinite; }
+.screen-face.执行中 { animation: 专注 1.9s ease-in-out infinite; }
+.screen-face.困困的 { animation: 困困呼吸 5.2s ease-in-out infinite; }
+.screen-face.需注意 { animation: 稳住 2.6s ease-in-out infinite; }
+@keyframes 呼吸 { 0%,100% { transform: translateY(0) scale(1);} 50% { transform: translateY(1px) scale(1.01);} }
+@keyframes 轻晃 { 0%,100% { transform: rotate(0deg);} 25% { transform: rotate(0.8deg);} 75% { transform: rotate(-0.8deg);} }
+@keyframes 微点头 { 0%,100% { transform: translateY(0);} 50% { transform: translateY(2px);} }
+@keyframes 轻弹 { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-2px);} }
+@keyframes 安抚 { 0%,100% { transform: translateX(0);} 50% { transform: translateX(-1px);} }
+@keyframes 专注 { 0%,100% { transform: translateX(0);} 50% { transform: translateX(1px);} }
+@keyframes 困困呼吸 { 0%,100% { transform: translateY(2px) scale(1);} 50% { transform: translateY(4px) scale(0.995);} }
+@keyframes 稳住 { 0%,100% { transform: translateX(0);} 25% { transform: translateX(0.5px);} 75% { transform: translateX(-0.5px);} }

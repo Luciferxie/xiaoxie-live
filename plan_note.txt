@@ -1,0 +1,1 @@
+Goal: replace emoji-heavy terminal prototype with a small square floating-window app using SVG facial expressions and real status hooks.

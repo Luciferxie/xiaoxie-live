@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.bak.*
+server.log
+data/status.json
+data/状态.json
+.DS_Store
