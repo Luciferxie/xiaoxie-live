@@ -50,6 +50,8 @@ class 小窗请求处理器(SimpleHTTPRequestHandler):
             self.返回会话列表()
             return
         if 请求路径 == '/':
+            self.path = '/dashboard.html'
+        elif 请求路径 == '/widget':
             self.path = '/index.html'
         super().do_GET()
 
