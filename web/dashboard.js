@@ -373,13 +373,17 @@ function 渲染会话(data) {
     return;
   }
   会话列表.innerHTML = data.map((s, i) => {
-    const time = s.lastMessage && s.lastMessage.time ? 时间格式化字符串(s.lastMessage.time) : '--';
+    const msg = s.lastMessage || {};
+    const time = msg.time ? 时间格式化字符串(msg.time) : '--';
+    const summary = msg.summary ? esc(msg.summary) : '';
+    const roleLabel = msg.role === 'user' ? '用户' : msg.role === 'assistant' ? '助手' : '';
     return `
       <div class="session-item">
         <div class="session-avatar">${i === 0 ? '🤖' : '💬'}</div>
         <div class="session-info">
           <div class="session-name">会话 ${s.id ? s.id.slice(-6) : i + 1}</div>
-          <div class="session-last">最后消息：${time}</div>
+          ${summary ? `<div class="session-summary">${roleLabel ? esc(roleLabel) + '：' : ''}${summary}</div>` : ''}
+          <div class="session-last">${time}${s.messageCount ? ` · ${s.messageCount} 条消息` : ''}</div>
         </div>
         <div class="session-status ${i === 0 ? '' : 'idle'}"></div>
       </div>

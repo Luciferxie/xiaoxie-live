@@ -81,6 +81,12 @@ body { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
 .screen-face.执行中 { animation: 专注 1.9s ease-in-out infinite; }
 .screen-face.困困的 { animation: 困困呼吸 5.2s ease-in-out infinite; }
 .screen-face.需注意 { animation: 稳住 2.6s ease-in-out infinite; }
+.screen-face.清醒中 { animation: 轻弹 2.6s ease-in-out infinite; }
+.screen-face.等待回复中 { animation: 呼吸 4.8s ease-in-out infinite; }
+.screen-face.得意中 { animation: 轻弹 3.0s ease-in-out infinite; }
+.screen-face.心疼中 { animation: 安抚 4.2s ease-in-out infinite; }
+.screen-face.倾听中 { animation: 安抚 4.5s ease-in-out infinite; }
+.screen-face.好奇中 { animation: 微点头 3.0s ease-in-out infinite; }
 @keyframes 呼吸 { 0%,100% { transform: translateY(0) scale(1);} 50% { transform: translateY(1px) scale(1.01);} }
 @keyframes 轻晃 { 0%,100% { transform: rotate(0deg);} 25% { transform: rotate(0.8deg);} 75% { transform: rotate(-0.8deg);} }
 @keyframes 微点头 { 0%,100% { transform: translateY(0);} 50% { transform: translateY(2px);} }

@@ -66,32 +66,47 @@ class 小窗请求处理器(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
     def 返回会话列表(self) -> None:
-        """返回会话列表，包含最新消息时间戳，供前端检测新消息"""
+        """返回会话列表，包含最新消息摘要，供前端展示"""
         会话目录 = Path.home() / '.openclaw' / 'agents' / 'main' / 'sessions'
         结果 = []
         try:
-            # 读取最新的几个会话文件
             文件列表 = sorted(会话目录.glob('*.jsonl'), key=lambda x: x.stat().st_mtime, reverse=True)[:5]
             for f in 文件列表:
                 try:
-                    内容 = f.read_text(encoding='utf-8').strip().split('\n')
+                    行们 = f.read_text(encoding='utf-8', errors='ignore').strip().split('\n')
                     最新消息时间 = None
-                    # 从后往前找最后一条消息
-                    for line in reversed(内容):
+                    最新角色 = None
+                    最新摘要 = ''
+                    消息总数 = 0
+                    for line in reversed(行们):
                         if not line.strip():
                             continue
                         try:
                             obj = json.loads(line)
-                            if obj.get('type') == 'message' and obj.get('message', {}).get('role') == 'user':
+                            if obj.get('type') != 'message':
+                                continue
+                            消息体 = obj.get('message', {})
+                            角色 = 消息体.get('role', '')
+                            if 角色 == 'toolResult':
+                                continue
+                            消息总数 += 1
+                            内容 = 消息体.get('content', '')
+                            if isinstance(内容, list):
+                                文本片段 = [p.get('text', '') for p in 内容 if isinstance(p, dict) and p.get('type') in ('text', 'input_text', 'output_text')]
+                                内容 = ' '.join(文本片段)
+                            if isinstance(内容, str) and 内容.strip() and not 最新摘要:
+                                最新摘要 = 内容.strip()[:60]
                                 最新消息时间 = obj.get('timestamp')
+                                最新角色 = 角色
+                            if 消息总数 >= 6:
                                 break
-                        except:
+                        except (json.JSONDecodeError, AttributeError):
                             continue
-                    if 最新消息时间:
-                        结果.append({
-                            'id': f.stem,
-                            'lastMessage': {'time': 最新消息时间}
-                        })
+                    结果.append({
+                        'id': f.stem,
+                        'lastMessage': {'time': 最新消息时间, 'role': 最新角色, 'summary': 最新摘要},
+                        'messageCount': 消息总数,
+                    })
                 except Exception:
                     continue
         except Exception:
